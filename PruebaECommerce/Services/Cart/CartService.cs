@@ -44,11 +44,11 @@ namespace PruebaECommerce.Services.Cart
 
             //Si el producto no existe, devolvemos un error 404
             if (product == null)
-                return new Result { Success = false, ErrorMessage = "Product not found.", StatusCode = 404 };
+                return new Result { Success = false, Message = "Product not found.", StatusCode = 404 };
 
             //Si la cantidad solicitada es mayor que el stock disponible, devolvemos un error 409
             if (product.Stock < addToCartDto.Quantity)
-                return new Result { Success = false, ErrorMessage = "Not enough stock available.", StatusCode = 409 };
+                return new Result { Success = false, Message = "Not enough stock available.", StatusCode = 409 };
 
             var cartItem = new CartItem
             {
@@ -62,7 +62,34 @@ namespace PruebaECommerce.Services.Cart
             await _context.SaveChangesAsync();
 
             //Devolvemos un resultado exitoso con código de estado 201
-            return new Result { Success = true, StatusCode = 201 };
+            return new Result { Success = true, StatusCode = 201, Message = "Producto agregado exitosamente" };
+        }
+
+        public async Task<Result> UpdateCartItemQuantityAsync(int userId, UpdateCartItemDto updateCartItemDto)
+        {
+            var cartItem = await _context.CartItems.FindAsync(updateCartItemDto.CartItemId);
+
+            //Si el registro del carrito no existe, devolvemos un error 404
+            if (cartItem == null)
+                return new Result { Success = false, Message = "Cart item not found.", StatusCode = 404 };
+
+            var product = await _context.Products.FindAsync(updateCartItemDto.ProductId);
+
+            //Si el producto no existe, devolvemos un error 404
+            if (product == null)
+                return new Result { Success = false, Message = "Product not found.", StatusCode = 404 };
+
+            //Si la cantidad solicitada es mayor que el stock disponible, devolvemos un error 409
+            if (product.Stock < updateCartItemDto.Quantity)
+                return new Result { Success = false, Message = "Not enough stock available.", StatusCode = 409 };
+
+            cartItem.Quantity = updateCartItemDto.Quantity;
+
+            //Actualizamos la base de datos
+            await _context.SaveChangesAsync();
+
+            //Devolvemos un resultado exitoso con código de estado 200
+            return new Result { Success = true, StatusCode = 200, Message = "Producto actualizado exitosamente" };
         }
     }
 }

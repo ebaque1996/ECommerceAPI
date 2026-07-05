@@ -4,7 +4,7 @@
     public class Result
     {
         public bool Success { get; set; }
-        public string ErrorMessage { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
         public int StatusCode { get; set; }
     }
 }

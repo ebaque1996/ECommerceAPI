@@ -26,11 +26,14 @@ namespace PruebaECommerce.Controllers
         public async Task<IActionResult> AddItemToCart(int userId, AddToCartDto addToCartDto)
         {
             var result = await _cartService.AddItemToCartAsync(userId, addToCartDto);
+            return StatusCode(result.StatusCode, new { message = result.Message });
+        }
 
-            if (!result.Success)
-                return StatusCode(result.StatusCode, new { message = result.ErrorMessage });
-
-            return StatusCode(201, new { message = "Producto agregado exitosamente" });
+        [HttpPut("{items}/productId")]
+        public async Task<IActionResult> UpdateCartItemQuantity(int userId, UpdateCartItemDto updateCartItemDto)
+        {
+            var result = await _cartService.UpdateCartItemQuantityAsync(userId, updateCartItemDto);
+            return StatusCode(result.StatusCode, new { message = result.Message });
         }
     }
 }
