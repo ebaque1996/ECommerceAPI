@@ -7,6 +7,7 @@ namespace PruebaECommerce.Services.Cart
     {
         Task<CartResponseDto> GetCartAsync(int userId);
         Task<Result> AddItemToCartAsync(int userId, AddToCartDto addToCartDto);
-        Task<Result> UpdateCartItemQuantityAsync(int userId, UpdateCartItemDto updateCartItemDto);
+        Task<Result> UpdateCartItemQuantityAsync(int userId, int productId, UpdateCartItemDto updateCartItemDto);
+        Task<Result> DeleteCartItemAsync(int userId, int productId);
     }
 }

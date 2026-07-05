@@ -62,18 +62,18 @@ namespace PruebaECommerce.Services.Cart
             await _context.SaveChangesAsync();
 
             //Devolvemos un resultado exitoso con código de estado 201
-            return new Result { Success = true, StatusCode = 201, Message = "Producto agregado exitosamente" };
+            return new Result { Success = true, StatusCode = 201, Message = "Product created successfully" };
         }
 
-        public async Task<Result> UpdateCartItemQuantityAsync(int userId, UpdateCartItemDto updateCartItemDto)
+        public async Task<Result> UpdateCartItemQuantityAsync(int userId, int productId, UpdateCartItemDto updateCartItemDto)
         {
-            var cartItem = await _context.CartItems.FindAsync(updateCartItemDto.CartItemId);
+            var cartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.ProductId == productId && c.UserId == userId);
 
             //Si el registro del carrito no existe, devolvemos un error 404
             if (cartItem == null)
                 return new Result { Success = false, Message = "Cart item not found.", StatusCode = 404 };
 
-            var product = await _context.Products.FindAsync(updateCartItemDto.ProductId);
+            var product = await _context.Products.FindAsync(productId);
 
             //Si el producto no existe, devolvemos un error 404
             if (product == null)
@@ -83,13 +83,28 @@ namespace PruebaECommerce.Services.Cart
             if (product.Stock < updateCartItemDto.Quantity)
                 return new Result { Success = false, Message = "Not enough stock available.", StatusCode = 409 };
 
+            //Actualizamos la cantidad del producto en la tabla CartItems
             cartItem.Quantity = updateCartItemDto.Quantity;
-
-            //Actualizamos la base de datos
             await _context.SaveChangesAsync();
 
             //Devolvemos un resultado exitoso con código de estado 200
-            return new Result { Success = true, StatusCode = 200, Message = "Producto actualizado exitosamente" };
+            return new Result { Success = true, StatusCode = 200, Message = "Product updated successfully" };
+        }
+
+        public async Task<Result> DeleteCartItemAsync(int userId, int productId)
+        {
+            var cartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.ProductId == productId && c.UserId == userId);
+
+            //Si el registro del carrito no existe, devolvemos un error 404
+            if (cartItem == null)
+                return new Result { Success = false, Message = "Cart item not found.", StatusCode = 404 };
+
+            //Removemos el registro de la tabla CartItems
+            _context.CartItems.Remove(cartItem);
+            await _context.SaveChangesAsync();
+
+            //Devolvemos un resultado exitoso con código de estado 200
+            return new Result { Success = true, StatusCode = 200, Message = "Product removed successfully" };
         }
     }
 }
