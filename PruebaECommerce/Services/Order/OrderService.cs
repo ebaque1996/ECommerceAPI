@@ -39,5 +39,28 @@ namespace PruebaECommerce.Services.Order
 
             return new Result<List<OrderResponseDto>> { Success = true, StatusCode = 200, Data = orders };
         }
+
+        public async Task<Result<List<OrderDetailResponseDto>>> GetOrderDetailByIdAsync(int orderId)
+        {
+            var orderDetails = await _context.OrderDetails
+                .Where(od => od.OrderId == orderId)
+                .Select(od => new OrderDetailResponseDto
+                {
+                    Id = od.Id,
+                    OrderId = od.OrderId,
+                    ProductId = od.ProductId,
+                    ProductName = od.Product.Name,
+                    Quantity = od.Quantity,
+                    UnitPrice = od.UnitPrice,
+                    Subtotal = od.Subtotal,
+                })
+            .ToListAsync();
+
+            //Si no se encuentran detalles de la orden, devolvemos un error 404
+            if (orderDetails == null || orderDetails.Count == 0)
+                return new Result<List<OrderDetailResponseDto>> { Success = false, Message = "Order details not found.", StatusCode = 404 };
+            
+            return new Result<List<OrderDetailResponseDto>> { Success = true, StatusCode = 200, Data = orderDetails };
+        }
     }
 }

@@ -20,5 +20,12 @@ namespace PruebaECommerce.Controllers
             var result = await _orderService.GetOrdersByUserIdAsync(userId);
             return StatusCode(result.StatusCode, new { message = result.Message, data = result.Data });
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderDetailById(int id)
+        {
+            var result = await _orderService.GetOrderDetailByIdAsync(id);
+            return StatusCode(result.StatusCode, new { message = result.Message, data = result.Data });
+        }
     }
 }

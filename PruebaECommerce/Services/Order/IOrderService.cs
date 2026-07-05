@@ -6,5 +6,6 @@ namespace PruebaECommerce.Services.Order
     public interface IOrderService
     {
         Task<Result<List<OrderResponseDto>>> GetOrdersByUserIdAsync(int userId);
+        Task<Result<List<OrderDetailResponseDto>>> GetOrderDetailByIdAsync(int orderId);
     }
 }
