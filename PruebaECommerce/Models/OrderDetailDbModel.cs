@@ -1,6 +1,6 @@
 ﻿namespace PruebaECommerce.Models
 {
-    public class OrderDetail
+    public class OrderDetailDbModel
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
@@ -10,7 +10,7 @@
         public decimal Subtotal => Quantity * UnitPrice;
 
 
-        public Order Order { get; set; } = null!;
-        public Product Product { get; set; } = null!;
+        public OrderDbModel Order { get; set; } = null!;
+        public ProductDbModel Product { get; set; } = null!;
     }
 }

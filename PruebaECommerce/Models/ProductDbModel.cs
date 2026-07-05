@@ -1,6 +1,6 @@
 ﻿namespace PruebaECommerce.Models
 {
-    public class Product
+    public class ProductDbModel
     {
         public int Id { get; set; }
         public string Code { get; set; } = string.Empty;

@@ -58,7 +58,7 @@ namespace PruebaECommerce.Services.Cart
             if (product.Stock < addToCartDto.Quantity)
                 return new Result { Success = false, Message = "Not enough stock available.", StatusCode = 409 };
 
-            var cartItem = new CartItem
+            var cartItem = new CartItemDbModel
             {
                 UserId = userId,
                 ProductId = addToCartDto.ProductId,
