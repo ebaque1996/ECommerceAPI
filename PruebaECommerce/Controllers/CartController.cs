@@ -18,8 +18,8 @@ namespace PruebaECommerce.Controllers
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetCart(int userId)
         {
-            var cart = await _cartService.GetCartAsync(userId);
-            return Ok(cart);
+            var result = await _cartService.GetCartAsync(userId);
+            return StatusCode(result.StatusCode, new { message = result.Message, data = result.Data });
         }
 
         [HttpPost("items")]

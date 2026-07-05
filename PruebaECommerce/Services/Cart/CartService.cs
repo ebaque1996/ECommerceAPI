@@ -14,7 +14,7 @@ namespace PruebaECommerce.Services.Cart
             _context = context;
         }
 
-        public async Task<CartResponseDto> GetCartAsync(int userId)
+        public async Task<Result<CartResponseDto>> GetCartAsync(int userId)
         {
             var cartItems = await _context.CartItems
                 .Where(ci => ci.UserId == userId)
@@ -28,13 +28,21 @@ namespace PruebaECommerce.Services.Cart
                     Quantity = ci.Quantity
                 })
                 .ToListAsync();
+            
+            if (cartItems == null || cartItems.Count == 0)
+                return new Result<CartResponseDto> { Success = false, Message = "Items not found.", StatusCode = 404 };
+
             var subTotal = cartItems.Sum(ci => ci.TotalPrice);
             var discount = 0m; // TODO: Implement discount calculation logic here
-            return new CartResponseDto
-            {
-                Items = cartItems,
-                SubTotal = subTotal,
-                Discount = discount
+
+            return new Result<CartResponseDto> { 
+                Success = true, 
+                StatusCode = 200, 
+                Data = new CartResponseDto { 
+                    Items = cartItems, 
+                    SubTotal = subTotal, 
+                    Discount = discount 
+                } 
             };
         }
 
