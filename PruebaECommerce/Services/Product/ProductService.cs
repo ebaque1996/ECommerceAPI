@@ -29,6 +29,7 @@ namespace PruebaECommerce.Services.Product
                 })
                 .FirstOrDefaultAsync();
 
+            //Si no se encuentra el producto, devolvemos un error 404
             if (product == null)
                 return new Result<ProductResponseDto> { Success = false, Message = "Product not found.", StatusCode = 404 };
 
@@ -77,6 +78,7 @@ namespace PruebaECommerce.Services.Product
                 })
             .ToListAsync();
 
+            //Si no se encuentra al menos un producto en base a los criterios enviados, devolvemos un error 404
             if (products == null || products.Count == 0)
                 return new Result<List<ProductResponseDto>> { Success = false, Message = "Products not found.", StatusCode = 404 };
 

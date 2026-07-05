@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PruebaECommerce.Repositories.Data;
 using PruebaECommerce.Services.Cart;
+using PruebaECommerce.Services.Order;
 using PruebaECommerce.Services.Product;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //Dependency Injections for the services
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 var app = builder.Build();
 
