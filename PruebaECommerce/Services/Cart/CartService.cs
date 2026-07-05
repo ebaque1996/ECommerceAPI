@@ -106,5 +106,21 @@ namespace PruebaECommerce.Services.Cart
             //Devolvemos un resultado exitoso con código de estado 200
             return new Result { Success = true, StatusCode = 200, Message = "Product removed successfully" };
         }
+
+        public async Task<Result> ClearCartAsync(int userId)
+        {
+            var cartItems = await _context.CartItems.Where(c => c.UserId == userId).ToListAsync();
+
+            //Si no existen registros en el carrito, devolvemos un error 404
+            if (cartItems == null || cartItems.Count == 0)
+                return new Result { Success = false, Message = "Cart items not found.", StatusCode = 404 };
+
+            //Removemos los registros del usuario de la tabla CartItems
+            _context.CartItems.RemoveRange(cartItems);
+            await _context.SaveChangesAsync();
+
+            //Devolvemos un resultado exitoso con código de estado 200
+            return new Result { Success = true, StatusCode = 200, Message = "Products removed successfully" };
+        }
     }
 }

@@ -42,5 +42,12 @@ namespace PruebaECommerce.Controllers
             var result = await _cartService.DeleteCartItemAsync(userId, productId);
             return StatusCode(result.StatusCode, new { message = result.Message });
         }
+
+        [HttpDelete("")]
+        public async Task<IActionResult> ClearCart(int userId)
+        {
+            var result = await _cartService.ClearCartAsync(userId);
+            return StatusCode(result.StatusCode, new { message = result.Message });
+        }
     }
 }
