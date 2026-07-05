@@ -1,0 +1,10 @@
+﻿namespace PruebaECommerce.Common.Results
+{
+    //Objeto global para retornar resultados de operaciones, incluyendo éxito, mensaje de error y código de estado.
+    public class Result
+    {
+        public bool Success { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
+        public int StatusCode { get; set; }
+    }
+}
