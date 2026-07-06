@@ -5,7 +5,7 @@ namespace PruebaECommerce.Services.Product
 {
     public interface IProductService
     {
-        Task<Result<ProductResponseDto>> GetProductByIdAsync(int productId);
-        Task<Result<List<ProductResponseDto>>> GetProductsAsync(ProductFilterDto productFilterDto);
+        Task<Result<ProductItemResponseDto>> GetProductByIdAsync(int productId);
+        Task<Result<ProductResponseDto>> GetProductsAsync(ProductFilterDto productFilterDto);
     }
 }
